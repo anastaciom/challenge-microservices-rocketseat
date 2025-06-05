@@ -1,3 +1,5 @@
+import "@opentelemetry/auto-instrumentations-node/register";
+import { trace } from "@opentelemetry/api";
 import { fastify } from "fastify";
 import { fastifyCors } from "@fastify/cors";
 import { z } from "zod";
@@ -6,10 +8,12 @@ import {
   validatorCompiler,
   type ZodTypeProvider,
 } from "fastify-type-provider-zod";
+import { setTimeout } from "node:timers/promises";
 import { db } from "../db/client.ts";
 import { schema } from "../db/schema/index.ts";
 import { randomUUID } from "node:crypto";
 import { dispatchOrderCreated } from "../broker/messages/order_created.ts";
+import { tracer } from "../tracer/index.ts";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -35,16 +39,25 @@ app.post(
     const orderId = randomUUID();
 
     try {
+      await db.insert(schema.orders).values({
+        amount,
+        id: orderId,
+        customerId: "bd965a32-5c3a-4e57-afc5-ee71185288a9", //TODO: REMOVER UUID CHUMBADO
+      });
+
+      const span = tracer.startSpan(
+        "[TESTE] verificar a demora do 'setTimeout'"
+      ); //inicio da verificação
+      await setTimeout(2000);
+      span.end(); //final da verificação
+
+      trace.getActiveSpan()?.setAttribute("order_id", orderId);
+      trace.getActiveSpan()?.setAttribute("qualquer_coisa", "test123");
+
       dispatchOrderCreated({
         orderId,
         amount,
         customer: { id: "bd965a32-5c3a-4e57-afc5-ee71185288a9" }, //TODO: REMOVER UUID CHUMBADO
-      });
-
-      db.insert(schema.orders).values({
-        amount,
-        id: orderId,
-        customerId: "bd965a32-5c3a-4e57-afc5-ee71185288a9", //TODO: REMOVER UUID CHUMBADO
       });
 
       return res.status(201).send();

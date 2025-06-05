@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": "22.14.0"
+  },
   "scripts": {
     "dev": "node --env-file=.env --experimental-strip-types --watch --no-warnings src/http/server.ts",
     "start": "node --env-file=.env --experimental-strip-types  --no-warnings src/http/server.ts"
-
   },
   "keywords": [],
   "author": "",
@@ -14,6 +16,7 @@
   "description": "",
   "dependencies": {
     "@fastify/cors": "^11.0.1",
+    "@opentelemetry/api": "^1.9.0",
     "@tsconfig/node22": "^22.0.2",
     "@types/amqplib": "^0.10.7",
     "amqplib": "^0.10.8",
@@ -24,6 +27,9 @@
     "zod": "^3.25.51"
   },
   "devDependencies": {
+    "@opentelemetry/auto-instrumentations-node": "^0.60.0",
+    "@opentelemetry/sdk-node": "^0.202.0",
+    "@opentelemetry/sdk-trace-node": "^2.0.1",
     "@types/node": "^22.15.29",
     "drizzle-kit": "^0.31.1",
     "typescript": "^5.8.3"
