@@ -1,0 +1,12 @@
+services:
+  broker:
+    image: rabbitmq:3-management
+
+    ports:
+      - '5672:5672' #Porta de comunicação TCP (COMUNICAÇÃO ENTRE OS SERVIÇOS)
+      - '15672:15672' #Porta da interface gráfica (ADMIN)
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq_data:
