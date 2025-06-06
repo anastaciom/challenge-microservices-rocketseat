@@ -17,5 +17,35 @@ services:
       - "4317:4317" #OTLP/gRPC
       - "4318:4318" #OTLP/HTTP
 
+  api-gateway:
+    image: kong:3.9
+    environment:
+      KONG_DATABASE: 'off' # Desativa o uso do banco de dados interno (PostgreSQL) do Kong.
+      # Com isso, a configuração passa a ser totalmente declarativa, ou seja,
+      # será sempre carregada a partir do arquivo YAML definido no volume
+      # e referenciado pela variável KONG_DECLARATIVE_CONFIG.
+      # A partir disso, qualquer configuração (como serviços, rotas e plugins)
+      # deve ser feita exclusivamente via arquivo, e não pela interface Admin.
+      # Isso ocorre porque mudanças feitas pela UI são salvas no banco,
+      # e como ele está desativado ("off"), somente o arquivo é utilizado
+      # como fonte de verdade (state).
+      KONG_ADMIN_LISTEN: '0.0.0.0:8001'
+      KONG_ADMIN_GUI_URL: 'http://localhost:8002'
+      KONG_DECLARATIVE_CONFIG: '/kong/config.yaml'
+    extra_hosts:
+      # Por ser ambiente Docker, ele por padrão não reconhece o localhost.
+      # Com essa config, eu forço ele a apontar para o meu localhost.
+      # É necessário fazer isso, pois o arquivo de configuração do Kong precisa ter acesso
+      # aos serviços, e eles estão rodando em localhost (Fora do container)
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - './docker/kong/config.yaml:/kong/config.yaml'
+    ports:
+      - "8000:8000" #Proxy (API)
+      - "8001:8001" #API (ADMIN)
+      - "8002:8002" #UI (ADMIN)
+      - "8443:8443" #Proxy SSL (HTTPS)
+      - "8444:8444" #API (ADMIN) (HTTPS)
+
 volumes:
   rabbitmq_data:
