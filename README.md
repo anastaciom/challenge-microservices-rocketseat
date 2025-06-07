@@ -10,7 +10,7 @@ Projeto desenvolvido para fins de estudo durante a semana do Desafio de Microsse
 
 - **RabbitMq** - Message Broker
 
-- **API Gateway** – Centraliza o acesso externo e roteia as requisições entre os microsserviços
+- **Kong** – Api Gateway. Centraliza o acesso externo e roteia as requisições entre os microsserviços
 
 - **Nodejs (v22.14.0) com fastify e Typescript**
 
@@ -21,6 +21,8 @@ Projeto desenvolvido para fins de estudo durante a semana do Desafio de Microsse
 - **Jaeger** – Visualização de traces
 
 - **Grafana** – Painéis de métricas e observabilidade
+
+- **Pulumi (IAC)** – Infraestrutura como Código. Utilizado para provisionar as imagens dos serviços no ECR, configurar o Load Balancer, o API Gateway e o Cluster na AWS.
 
 ---
 
@@ -36,7 +38,7 @@ Project developed for study purposes during the Scalable Microservices Challenge
 
 - **RabbitMQ** – Message Broker
 
-- **API Gateway** – Centralizes external access and routes requests between microservices.
+- **Kong** – API Gateway, centralizes external access and routes requests between microservices.
 
 - **Node.js (v22.14.0) with Fastify and TypeScript**
 
@@ -47,3 +49,5 @@ Project developed for study purposes during the Scalable Microservices Challenge
 - **Jaeger** – Trace visualization
 
 - **Grafana** – Metrics and observability dashboards
+
+- **Pulumi (IaC)** – Infrastructure as Code. Used to provision service images in ECR, configure the Load Balancer, API Gateway, and the Cluster on AWS.

@@ -42,7 +42,7 @@ app.post(
       await db.insert(schema.orders).values({
         amount,
         id: orderId,
-        customerId: "bd965a32-5c3a-4e57-afc5-ee71185288a9", //TODO: REMOVER UUID CHUMBADO
+        customerId: "bd965a32-5c3a-4e57-afc5-ee71185288a9", //TODO: UUID CHUMBADO
       });
 
       const span = tracer.startSpan(
@@ -57,7 +57,7 @@ app.post(
       dispatchOrderCreated({
         orderId,
         amount,
-        customer: { id: "bd965a32-5c3a-4e57-afc5-ee71185288a9" }, //TODO: REMOVER UUID CHUMBADO
+        customer: { id: "bd965a32-5c3a-4e57-afc5-ee71185288a9" }, //TODO: UUID CHUMBADO
       });
 
       return res.status(201).send();

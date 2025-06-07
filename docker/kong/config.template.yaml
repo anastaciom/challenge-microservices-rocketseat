@@ -3,10 +3,8 @@ _transform: true
 
 services:
   - name: orders
-    url: http://host.docker.internal:3333
+    url: ${ORDERS_SERVICE_URL}
     protocol: http
-    host: host.docker.internal
-    port: 3333
     path: /orders
     routes:
       - name: api-orders
@@ -19,8 +17,6 @@ services:
   - name: invoices
     url: http://host.docker.internal:3334
     protocol: http
-    host: host.docker.internal
-    port: 3333
     path: /invoices
     routes:
       - name: api-invoices
